@@ -153,4 +153,53 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 	});
 });
 
+router.get('/history', (req, res) => {
+	const jsonFilePath = path.join(__dirname, '../db/orders.json');
+	const { driverId } = req.query;
+
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error reading file', status: false });
+		}
+
+		try {
+			const orders = JSON.parse(data).orders;
+			res.json(orders.filter((order) => order.driverId == driverId));
+		} catch (parseError) {
+			res.status(500).json({ message: 'Error parsing JSON', error: parseError });
+		}
+
+
+	});
+});
+
+router.get('/ticket', (req, res) => {
+	const jsonFilePath = path.join(__dirname, '../db/orders.json');
+	const { driverId } = req.query;
+
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error reading file', status: false });
+		}
+
+		try {
+			var orders = JSON.parse(data).orders;
+			orders = orders.filter((order) => order.driverId == driverId);
+			var validOrders = [];
+			orders.filter((order) => {
+				var now = new Date();
+				var endDate = new Date(order.endDate);
+				if (now < endDate) {
+					validOrders.push(order);
+				}
+			});
+			res.json(validOrders);
+		} catch (parseError) {
+			res.status(500).json({ message: 'Error parsing JSON', error: parseError });
+		}
+
+
+	});
+});
+
 export default router
