@@ -25,7 +25,9 @@ function decryptWithPrivateKey(encryptedMessage) {
     } catch (err) {
         console.error('Decryption failed:', err.message);
     }
+
     return encryptedMessage;
 }
 
 export {decryptWithPrivateKey}
+
