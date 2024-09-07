@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
-import {decryptWithPrivateKey} from '../functions/decrypt'
+import { decryptWithPrivateKey } from '../functions/decrypt'
 
 const router = express.Router()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -127,7 +127,7 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 				service: 'Gmail',
 				secure: true,
 				auth: {
-					driver: "karta1027710@gmail.com",
+					user: "karta1027710@gmail.com",
 					pass: "csznqanfslnwfzwt",
 				},
 			});
