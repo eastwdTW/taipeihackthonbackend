@@ -1,12 +1,16 @@
 import express from 'express'
 import cors from 'cors'
-import guessRoute from './routes/guess'
+import userRoute from './routes/user'
+import driverRoute from './routes/driver'
+import orderRoute from './routes/order'
 
 const app = express()
 
 app.use(cors())
 
-app.use('/api/guess', guessRoute)
+app.use('/api/user', userRoute)
+app.use('/api/driver', driverRoute)
+app.use('/api/order', orderRoute)
 
 const port = process.env.PORT || 4000
 app.listen(port, () => {

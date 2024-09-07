@@ -1,12 +1,8 @@
 import express from 'express'
-
-function roughScale(x, base) {
-  const parsed = parseInt(x, base);
-  if (isNaN(parsed)) { return 0; }
-  return parsed;
-}
+import "../db/users.json"
 
 const router = express.Router()
+
 router.post('/start', (_, res) => {
 	genNumber()
 	res.json({msg: true})
