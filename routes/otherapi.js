@@ -37,19 +37,27 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 			return res.status(500).json({ message: 'failed to read orders file', status: false });
 		}
 
-		let orders;
+		var orders;
 		if (data) {
 			orders = JSON.parse(data).orders;
 		}
+		var validDriver;
 
 		const driverFilePath = path.join(__dirname, '../db/drivers.json');
 		fs.readFile(driverFilePath, 'utf8', (err, data) => {
 			if (err) {
 				console.error(err);
-				return res.status(500).json({ message: 'failed to read orders file', status: false });
+				return res.status(500).json({ message: 'failed to read drivers file', status: false });
 			}
 
-			
+			var drivers;
+
+			if (data) {
+				drivers = JSON.parse(data).drivers;
+			}
+
+			const validDrivers = drivers.filter((driver) => driver.carType === carType);
+
 		});
 
 		const newOrder = {
@@ -59,7 +67,7 @@ router.post('/reserve', urlencodedParser, (req, res) => {
             from: from,
             to: to,
             carType: carType,
-            driverId: null,
+            driverId: validDriver,
             customerid: customerid
 		};
 
