@@ -20,50 +20,50 @@ router.get('/test', (req, res) => {
 	// console.log(typeof Data)
 	// console.log(mes)
 
-	return res.json({msg:"succeed"})
+	return res.json({ msg: "succeed" })
 });
 
 router.post('/login', urlencodedParser, (req, res) => {
 	const jsonFilePath = path.join(__dirname, './db/users.json');
 
 	// Read the users.json file
-    fs.readFile(jsonFilePath, 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).json({ message: 'Server error' });
-        }
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+		if (err) {
+			return res.status(500).json({ message: 'Server error' });
+		}
 
-        let users;
-        try {
-            users = JSON.parse(data).users;
-        } catch (parseError) {
-            return res.status(500).json({ message: 'Error parsing user data' });
-        }
+		let users;
+		try {
+			users = JSON.parse(data).users;
+		} catch (parseError) {
+			return res.status(500).json({ message: 'Error parsing user data' });
+		}
 
-        // console.log(users)
-        console.log(req.body)
+		// console.log(users)
+		console.log(req.body)
 
-        // Extract credentials from the request body
-        const { account, password } = req.body;
+		// Extract credentials from the request body
+		const { account, password } = req.body;
 
-        // Find the user with the provided account
-        const user = users.find(user => user.account === account);
-        console.log(user)
+		// Find the user with the provided account
+		const user = users.find(user => user.account === account);
+		console.log(user)
 
-        if (!user) {
-            return res.status(401).json({ message: 'User not found' });
-        }
+		if (!user) {
+			return res.status(401).json({ message: 'User not found' });
+		}
 
-        // Check if the password matches
-        if (user.password !== password) {
-            return res.status(401).json({ message: 'Incorrect password' });
-        }
+		// Check if the password matches
+		if (user.password !== password) {
+			return res.status(401).json({ message: 'Incorrect password' });
+		}
 
-        // If authentication is successful
-        res.status(200).json({ message: 'Login successful' });
-    });
+		// If authentication is successful
+		res.status(200).json({ message: 'Login successful' });
+	});
 });
 
-router.post('/regist', (req, res) => {
+router.post('/regist', urlencodedParser, (req, res) => {
 	const usersFilePath = path.join(__dirname, './db/users.json');
 	const { name, account, password, phone, email, handicapFilePath } = req.body;
 
