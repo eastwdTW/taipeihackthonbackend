@@ -131,12 +131,13 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 					pass: "csznqanfslnwfzwt",
 				},
 			});
-
+			// derrickyi02@gmail.com
 			let mailOptions = {
 				from: 'karta1027710@gmail.com', // 寄件人地址
-				to: 'vincent71334@gmail.com', // 收件人地址
+				to: 'jason1799678@gmail.com', // 收件人地址
 				subject: '重設密碼確認信', // 主題
 				text: '您的密碼已重設為' + newPassword, // 郵件內容 (純文字)
+				attachment: '../db/',
 			};
 
 			transporter.sendMail(mailOptions, (error, info) => {
