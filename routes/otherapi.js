@@ -2,7 +2,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
-import { console } from 'inspector';
 
 const router = express.Router()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -77,12 +76,12 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 		const newOrder = {
 			id: Math.random().toString(36).substr(2, 9),
 			startDate: startDate,
-            endDate: null,
-            from: from,
-            to: to,
-            carType: carType,
-            driverId: validDriver,
-            customerid: customerid
+			endDate: null,
+			from: from,
+			to: to,
+			carType: carType,
+			driverId: validDriver,
+			customerid: customerid
 		};
 
 		orders.push(newOrder);
@@ -102,7 +101,6 @@ router.get('/available/car', (req, res) => {
 	const driversFilePath = path.join(__dirname, '../db/drivers.json');
 	const { from, to, startDate, carType } = req.query;
 
-
 	fs.readFile(ordersFilePath, 'utf8', (err, data) => {
 		if (err) {
 			return res.status(500).json({ message: 'Error reading orders file', status: false });
@@ -113,14 +111,13 @@ router.get('/available/car', (req, res) => {
 			orders = JSON.parse(data).orders;
 		}
 
-		const conflictOrders = orders.filter(order => {
-			(startDate >= order.startDate) && (startDate <= order.endDate);
-		});
+		const conflictOrders = orders.filter((order) => (
+			(startDate >= order.startDate) && (startDate <= order.endDate)
+		));
 
 		const conflictdriverIds = conflictOrders.map(order => order.driverId);
-		console.log(conflictdriverIds);
-		fs.readFile(driversFilePath, 'utf8', (err, driverData) => {
-			if (err) {
+		fs.readFile(driversFilePath, 'utf8', (driversErr, driverData) => {
+			if (driversErr) {
 				return res.status(500).json({ message: 'Error reading drivers file', status: false });
 			}
 
@@ -129,11 +126,11 @@ router.get('/available/car', (req, res) => {
 				drivers = JSON.parse(driverData).drivers;
 			}
 
-			const availableDriver = drivers.find(driver => !conflictdriverIds.includes(driver.driverId) && driver.carType === carType);
+			const availableDriver = drivers.find((driver) => ((!conflictdriverIds.includes(driver.id)) && (driver.carType === carType)));
 			if (!availableDriver) {
 				return res.json({ status: false, message: 'No available driver' });
 			}
-			res.json({ status: true, carType: availableDriver.carType, waitingTime: "01:00:00", price: 300 });
+			res.json({ status: true, carType: availableDriver.carType, waitingTime: "01:00:00", driverId: availableDriver.id, price: 320 });
 		});
 
 	});
