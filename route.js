@@ -1,39 +1,66 @@
-import express from 'express'
+import express from 'express';
+import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
 
 const router = express.Router()
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get('/test', (req, res) => {
 	const jsonFilePath = path.join(__dirname, './db/users.json');
 
-	var Data;
+	var mes;
 
 	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
-		Data = Json.parse(data)
+		console.log(data)
+		mes = JSON.parse(data)
 	});
 
-	console.log
+	// console.log(typeof Data)
+	// console.log(mes)
 
-	return res.status(200)
+	return res.json({msg:"succeed"})
 });
 
-router.post('/login', (req, res) => {
-	const jsonFilePath = path.join(__dirname, '../db/users.json');
+router.post('/login', urlencodedParser, (req, res) => {
+	const jsonFilePath = path.join(__dirname, './db/users.json');
 
-	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
-		// if (err) {
-		// 	return res.status(500).json({ message: 'Error reading file', error: err });
-		// }
+	// Read the users.json file
+    fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: 'Server error' });
+        }
 
-		// try {
-		// 	const drivers = JSON.parse(data);
-		// 	res.json(drivers);
-		// } catch (parseError) {
-		// 	res.status(500).json({ message: 'Error parsing JSON', error: parseError });
-		// }
-		console.log(data)
-	});
+        let users;
+        try {
+            users = JSON.parse(data).users;
+        } catch (parseError) {
+            return res.status(500).json({ message: 'Error parsing user data' });
+        }
+
+        // console.log(users)
+        console.log(req.body)
+
+        // Extract credentials from the request body
+        const { account, password } = req.body;
+
+        // Find the user with the provided account
+        const user = users.find(user => user.account === account);
+        console.log(user)
+
+        if (!user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
+        // Check if the password matches
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Incorrect password' });
+        }
+
+        // If authentication is successful
+        res.status(200).json({ message: 'Login successful' });
+    });
 });
 
 router.post('/regist', (req, res) => {
