@@ -1,6 +1,6 @@
-const fs = require('fs');
-const crypto = require('crypto');
-const path = require('path');
+import * as fs from "fs";
+import * as crypto from "crypto";
+import * as path from "path";
 
 function decryptWithPrivateKey(encryptedMessage) {
     const privateKey = fs.readFileSync(path.join(__dirname, 'private_key.pem'), 'utf8');
@@ -25,7 +25,9 @@ function decryptWithPrivateKey(encryptedMessage) {
     } catch (err) {
         console.error('Decryption failed:', err.message);
     }
+
+    return encryptedMessage;
 }
 
-const encryptedMessage = "Ms5GCL7OAh4gTtSlf398WVNTBD71EqGEfm/rBQO+v++Zb9sVBz0RspGkEklFjL5HY0e95CTY7LcSqeA88wzve5HR4ktRYpEfHokbVla9rSrYTCn/MurghryqLleK8cMk6qRSZEXInhmXyEPVsKv/LffqR+BJ8QcLBrKIhEFFZ9M=";
-decryptWithPrivateKey(encryptedMessage);
+export {decryptWithPrivateKey}
+

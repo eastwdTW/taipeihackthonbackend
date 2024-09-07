@@ -7,7 +7,8 @@
             "password": "e703e6fff1ee981f0980ee2658edfe4aeadef781b1584a1d74143bd54e797a5c",
             "email": "morriskathryn@gmail.com",
             "phone": "437-665-4560x3998",
-            "driverIdentificationCode": "ab82a0bb-c808-4ab3-b8ba-062713a6343e"
+            "driverIdentificationCode": "ab82a0bb-c808-4ab3-b8ba-062713a6343e",
+            "carType": "無障礙乘車"
         },
         {
             "id": 5956,
@@ -16,25 +17,38 @@
             "password": "09a97ec7a2467ca87a111bd5c1142854927ad52da320e22eedea2f438fe1c1f94",
             "email": "arthur38@gmail.com",
             "phone": "001-079-305-9238x7410",
-            "driverIdentificationCode": "9d5bce5f-f211-4ce9-b6b4-71b7b83b58a4"
+            "driverIdentificationCode": "9d5bce5f-f211-4ce9-b6b4-71b7b83b58a4",
+            "carType": "無障礙乘車"
         },
         {
             "id": 6804,
             "name": "Mr. Tyler Leon",
             "account": "smithrichard",
-            "password": "df572092baa38edae3d97ee1921dc1e9c3bc63b983ade0043b49a38961694781b",
+            "password": "f572092baa38edae3d97ee1921dc1e9c3bc63b983ade0043b49a38961694781b",
             "email": "ykemp@gmail.com",
             "phone": "001-293-877-8653x546",
-            "driverIdentificationCode": "d7aa136c-35ce-4316-bd22-ad3f95d75af0"
+            "driverIdentificationCode": "d7aa136c-35ce-4316-bd22-ad3f95d75af0",
+            "carType": "無障礙乘車"
         },
         {
             "id": 6574,
             "name": "Ronald Williams",
             "account": "awilliams",
-            "password": "70c54417206006e213bdd6561925d23575a3365ccacefa07fe47db1bf9f438fab",
+            "password": "0c54417206006e213bdd6561925d23575a3365ccacefa07fe47db1bf9f438fab",
             "email": "pchan@gmail.com",
             "phone": "225-146-8861x81807",
-            "driverIdentificationCode": "2e471144-611c-4c9e-a625-496f80f14cc1"
+            "driverIdentificationCode": "2e471144-611c-4c9e-a625-496f80f14cc1",
+            "carType": "無障礙乘車"
+        },
+        {
+            "id": "p46ryomb0",
+            "name": "john",
+            "account": "johnson683",
+            "password": "aa46a163",
+            "email": "vincent71334@gmail.com",
+            "phone": "0975301078",
+            "driverIdentificationCode": "sadopsakopskaos",
+            "carType": "無障礙乘車"
         }
     ]
 }

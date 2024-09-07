@@ -13,7 +13,7 @@
             "id": 3393,
             "name": "Dennis Mann",
             "account": "ashley28",
-            "password": "49afd3005f4821effb9f7c1110c047b86b8e625ba9ed8b4a899e13928ca36b885",
+            "password": "9afd3005f4821effb9f7c1110c047b86b8e625ba9ed8b4a899e13928ca36b885",
             "email": "chloealvarez@gmail.com",
             "phone": "742.070.7220",
             "handicapFilePath": "/themselves/fast.mp3"
@@ -35,15 +35,6 @@
             "email": "flynnmiranda@gmail.com",
             "phone": "661-230-0475",
             "handicapFilePath": "/and/say.flac"
-        },
-        {
-            "id": "56aozhwgu",
-            "name": "john",
-            "account": "johnson683",
-            "password": "jasidjSA",
-            "email": "erictsai100@gmail.com",
-            "phone": "0975301078",
-            "handicapFilePath": "/home"
         }
     ]
 }
