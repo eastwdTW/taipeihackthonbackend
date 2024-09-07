@@ -28,9 +28,8 @@ router.post('/login', urlencodedParser, (req, res) => {
 
 		const { account, password } = req.body;
 
-		console.log(password)
-		var test = decryptWithPrivateKey(password)
-		console.log(test)
+		var decrypt_password = decryptWithPrivateKey(password)
+		var hash = crypto.createHash('sha256').update(decrypt_password).digest('hex');
 
 		const user = users.find(user => user.account === account);
 
@@ -39,7 +38,7 @@ router.post('/login', urlencodedParser, (req, res) => {
 		}
 
 		// Check if the password matches
-		if (user.password !== password) {
+		if (user.password !== hash) {
 			return res.status(401).json({ message: 'Incorrect password' });
 		}
 
@@ -51,8 +50,6 @@ router.post('/login', urlencodedParser, (req, res) => {
 router.post('/regist', urlencodedParser, (req, res) => {
 	const usersFilePath = path.join(__dirname, './db/users.json');
 	const { name, account, password, phone, email, handicapFilePath } = req.body;
-
-	console.log(req.body)
 
 	if (!name || !account || !password || !phone || !email || !handicapFilePath) {
 		return res.status(400).json({ message: 'please provide the complete information (account, password, phone, email)', status: false });
@@ -74,11 +71,13 @@ router.post('/regist', urlencodedParser, (req, res) => {
 			return res.status(409).json({ message: 'The account already exists', status: false });
 		}
 
+		var decrypt_password = decryptWithPrivateKey(password)
+
 		const newUser = {
 			id: Math.random().toString(36).substr(2, 9),
 			name: name,
 			account: account,
-			password: password,
+			password: crypto.createHash('sha256').update(decrypt_password).digest('hex'),
 			email: email,
 			phone: phone,
 			handicapFilePath: handicapFilePath
