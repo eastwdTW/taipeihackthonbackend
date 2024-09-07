@@ -14,7 +14,7 @@
             "id": 5956,
             "name": "George Tran",
             "account": "steeletanner",
-            "password": "09a97ec7a2467ca87a111bd5c1142854927ad52da320e22eedea2f438fe1c1f94",
+            "password": "9a97ec7a2467ca87a111bd5c1142854927ad52da320e22eedea2f438fe1c1f94",
             "email": "arthur38@gmail.com",
             "phone": "001-079-305-9238x7410",
             "driverIdentificationCode": "9d5bce5f-f211-4ce9-b6b4-71b7b83b58a4",
@@ -39,16 +39,7 @@
             "phone": "225-146-8861x81807",
             "driverIdentificationCode": "2e471144-611c-4c9e-a625-496f80f14cc1",
             "carType": "無障礙乘車"
-        },
-        {
-            "id": "p46ryomb0",
-            "name": "john",
-            "account": "johnson683",
-            "password": "aa46a163",
-            "email": "vincent71334@gmail.com",
-            "phone": "0975301078",
-            "driverIdentificationCode": "sadopsakopskaos",
-            "carType": "無障礙乘車"
         }
+
     ]
 }
