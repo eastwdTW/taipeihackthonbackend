@@ -22,7 +22,7 @@ router.get("/announcement", (req, res) => {
       announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
       res.json(announcements);
     } catch (parseError) {
-      res
+      return res
         .status(500)
         .json({ message: "Error parsing JSON", error: parseError });
     }
@@ -181,6 +181,28 @@ router.get("/available/car", (req, res) => {
         })
       );
     });
+  });
+});
+
+router.post("/faq", urlencoded, (req, res) => {
+  const jsonFilePath = path.join(__dirname, "../db/faq.json");
+  const { question } = req.body;
+
+  fs.readFile(jsonFilePath, "utf8", (err, data) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ message: "Error reading file", error: err });
+    }
+
+    try {
+      const faqs = JSON.parse(data);
+      res.json({ answer: faqs.find((faq) => faq.question === question)});
+    } catch (parseError) {
+      return res
+        .status(500)
+        .json({ message: "Error parsing JSON", error: parseError });
+    }
   });
 });
 
