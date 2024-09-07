@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
+import inlineBase64 from 'nodemailer-plugin-inline-base64';
 import { decryptWithPrivateKey } from '../functions/decrypt'
 
 const router = express.Router()
@@ -132,19 +133,25 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 					pass: "csznqanfslnwfzwt",
 				},
 			});
-			// derrickyi02@gmail.com
+
+			transporter.use('compile', inlineBase64({cidPrefix: 'somePrefix_'}));
+			var content = '您的密碼已重設為' + newPassword;
+
 			let mailOptions = {
-				from: 'karta1027710@gmail.com', // 寄件人地址
-				to: forgetPasswordUser.email, // 收件人地址
-				subject: '重設密碼確認信', // 主題
-				text: '您的密碼已重設為' + newPassword, // 郵件內容 (純文字)
-				attachment: [
+				from: 'karta1027710@gmail.com',
+				to: forgetPasswordUser.email,
+				subject: '萬安關心您',
+				html: `<p>
+				${content}
+				</p>
+				<img src="cid:imgcid" id="image">`,
+				attachments: [
 					{
 						filename: 'god_fist.jpg',
-						path: '../images/god_fist.jpg',
-						// cid: 'karta1027710@gmail.com',
+						path: path.join(__dirname, '../images/god_fist.jpg'),
+						cid: 'imgcid'
 					}
-				],
+				]
 			};
 
 			transporter.sendMail(mailOptions, (error, info) => {
