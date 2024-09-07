@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import {decryptWithPrivateKey} from './functions/decrypt'
 
 const router = express.Router()
 var jsonParser = bodyParser.json()
@@ -26,6 +27,10 @@ router.post('/login', urlencodedParser, (req, res) => {
 		}
 
 		const { account, password } = req.body;
+
+		console.log(password)
+		var test = decryptWithPrivateKey(password)
+		console.log(test)
 
 		const user = users.find(user => user.account === account);
 
