@@ -7,7 +7,8 @@
             "password": "b096a7fe4ed1ad54f429428b5cfc1e6b72fe19c6ba2c122b3fe6012eb2d342a2",
             "email": "morriskathryn@gmail.com",
             "phone": "437-665-4560x3998",
-            "driverIdentificationCode": "ab82a0bb-c808-4ab3-b8ba-062713a6343e"
+            "driverIdentificationCode": "ab82a0bb-c808-4ab3-b8ba-062713a6343e",
+            "carType": "無障礙乘車"
         },
         {
             "id": 5956,
@@ -16,7 +17,8 @@
             "password": "08408cdcf2a2548b2d5a6b9b311a3d33abef0c14b5d39ff20bed7ffcc91fab9b",
             "email": "arthur38@gmail.com",
             "phone": "001-079-305-9238x7410",
-            "driverIdentificationCode": "9d5bce5f-f211-4ce9-b6b4-71b7b83b58a4"
+            "driverIdentificationCode": "9d5bce5f-f211-4ce9-b6b4-71b7b83b58a4",
+            "carType": "無障礙乘車"
         },
         {
             "id": 6804,
@@ -25,7 +27,8 @@
             "password": "dbca0d96bbec6856a18486b015fc837789d1da7507d4883e326f2e612c324b91",
             "email": "ykemp@gmail.com",
             "phone": "001-293-877-8653x546",
-            "driverIdentificationCode": "d7aa136c-35ce-4316-bd22-ad3f95d75af0"
+            "driverIdentificationCode": "d7aa136c-35ce-4316-bd22-ad3f95d75af0",
+            "carType": "無障礙乘車"
         },
         {
             "id": 6574,
@@ -34,7 +37,8 @@
             "password": "73605d5a3deed871c97a933b62fbb0bcd8c533c40378de30735effb715c8498e",
             "email": "pchan@gmail.com",
             "phone": "225-146-8861x81807",
-            "driverIdentificationCode": "2e471144-611c-4c9e-a625-496f80f14cc1"
+            "driverIdentificationCode": "2e471144-611c-4c9e-a625-496f80f14cc1",
+            "carType": "無障礙乘車"
         },
         {
             "id": "p46ryomb0",
@@ -43,7 +47,8 @@
             "password": "aa46a163",
             "email": "vincent71334@gmail.com",
             "phone": "0975301078",
-            "driverIdentificationCode": "sadopsakopskaos"
+            "driverIdentificationCode": "sadopsakopskaos",
+            "carType": "無障礙乘車"
         }
     ]
 }

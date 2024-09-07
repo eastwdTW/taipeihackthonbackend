@@ -41,7 +41,7 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 		if (data) {
 			orders = JSON.parse(data).orders;
 		}
-		var validDriver;
+		var validDriver = null;
 
 		const driverFilePath = path.join(__dirname, '../db/drivers.json');
 		fs.readFile(driverFilePath, 'utf8', (err, data) => {
@@ -83,9 +83,32 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 	});
 });
 
-router.get('available/car', (req, res) => {
-	const {from, to, startDate, carType} = req.query;
+router.get('/available/car', (req, res) => {
+	const ordersFilePath = path.join(__dirname, '../db/orders.json');
+	const { from, to, startDate, carType } = req.query;
 
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error reading orders file', status: false });
+		}
+
+		let orders = [];
+		if (data) {
+			orders = JSON.parse(data).orders;
+		}
+		const fromDate = new Date(from);
+		const toDate = new Date(to);
+
+		const conflictOrders = orders.filter(order => {
+			const orderFromDate = new Date(order.from);
+			const orderToDate = new Date(order.to);
+			return (fromDate >= orderFromDate) && (fromDate <= orderToDate) || (toDate >= orderFromDate) && (toDate <= orderToDate);
+		});
+
+
+
+
+	});
 
 });
 
