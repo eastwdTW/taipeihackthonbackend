@@ -197,7 +197,7 @@ router.post("/faq", urlencodedParser, (req, res) => {
 
     try {
       const faqs = JSON.parse(data);
-      res.json({ answer: faqs.find((faq) => faq.question === question).answer});
+      res.json({ answer: faqs.find((faq) => faq.question === question).ans});
     } catch (parseError) {
       return res
         .status(500)
