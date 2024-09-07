@@ -37,7 +37,47 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/regist', (req, res) => {
+	const usersFilePath = path.join(__dirname, '../db/users.json');
+	const { account, password, phone, email } = req.body;
 
+	if (!account || !password || !phone || !email) {
+		return res.status(400).json({ message: '請提供完整的註冊資訊 (account, password, phone, email)' });
+	}
+
+	fs.readFile(usersFilePath, 'utf8', (err, data) => {
+		if (err) {
+			console.error(err);
+			return res.status(500).json({ message: '讀取用戶資料失敗' });
+		}
+
+		let users = [];
+		if (data) {
+			users = JSON.parse(data);
+		}
+
+
+		const userExists = users.find(user => user.account === account);
+		if (userExists) {
+			return res.status(409).json({ message: '該帳號已經存在' });
+		}
+
+		const newUser = {
+			account,
+			password,
+			phone,
+			email
+		};
+
+		users.push(newUser);
+
+		fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), 'utf8', (err) => {
+			if (err) {
+				console.error(err);
+				return res.status(500).json({ message: '無法儲存用戶資料' });
+			}
+			return res.status(201).json({ message: '註冊成功', user: newUser });
+		});
+	});
 });
 
 router.post('/forget-password', (req, res) => {
