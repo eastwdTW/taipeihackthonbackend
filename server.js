@@ -1,18 +1,18 @@
-import express from 'express'
-import cors from 'cors'
-import userRoute from './routes/userapi'
-import driverRoute from './routes/driverapi'
-import otherRoute from './routes/otherapi'
+import express from "express";
+import cors from "cors";
+import userRoute from "./routes/userapi";
+import driverRoute from "./routes/driverapi";
+import otherRoute from "./routes/otherapi";
 
-const app = express()
+const app = express();
 
-app.use(cors())
+app.use(cors());
 
-app.use('/api', otherRoute)
-app.use('/api/user', userRoute)
-app.use('/api/driver', driverRoute)
+app.use("/api", otherRoute);
+app.use("/api/user", userRoute);
+app.use("/api/driver", driverRoute);
 
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 9001;
 app.listen(port, () => {
-	console.log(`Server is up on port ${port}.`)
-})
+  console.log(`Server is up on port ${port}.`);
+});
