@@ -106,7 +106,7 @@ router.post("/reserve", urlencodedParser, (req, res) => {
 
         fs.writeFile(
           jsonFilePath,
-          JSON.stringify({ orders }, null, 4),
+          JSON.stringify({ orders }, null, 2),
           "utf8",
           (err) => {
             if (err) {

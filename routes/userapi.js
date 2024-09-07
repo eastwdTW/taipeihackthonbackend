@@ -120,7 +120,7 @@ router.post("/regist", upload.single("handicapFilePath"), (req, res) => {
 
     fs.writeFile(
       jsonFilePath,
-      JSON.stringify({ users }, null, 4),
+      JSON.stringify({ users }, null, 2),
       "utf8",
       (err) => {
         if (err) {
@@ -174,7 +174,7 @@ router.post("/forget-password", urlencodedParser, (req, res) => {
 
     fs.writeFile(
       jsonFilePath,
-      JSON.stringify({ users }, null, 4),
+      JSON.stringify({ users }, null, 2),
       "utf8",
       (writeErr) => {
         if (writeErr) {

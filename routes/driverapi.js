@@ -126,7 +126,7 @@ router.post("/regist", urlencodedParser, (req, res) => {
 
     fs.writeFile(
       jsonFilePath,
-      JSON.stringify({ drivers }, null, 4),
+      JSON.stringify({ drivers }, null, 2),
       "utf8",
       (err) => {
         if (err) {
@@ -180,7 +180,7 @@ router.post("/forget-password", urlencodedParser, (req, res) => {
 
     fs.writeFile(
       jsonFilePath,
-      JSON.stringify({ drivers }, null, 4),
+      JSON.stringify({ drivers }, null, 2),
       "utf8",
       (writeErr) => {
         if (writeErr) {
