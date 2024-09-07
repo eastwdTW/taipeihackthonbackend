@@ -1,49 +1,40 @@
 {
-  "users": [
-    {
-      "id": 996,
-      "name": "Kristine Young",
-      "account": "jbrown",
-      "password (hash)": "1bb534712fe5a1de8dca3e65080f4daf2033985ee799963d6342e71a1a144589",
-      "email": "hjohnson@gmail.com",
-      "phone": "001-615-731-5615x367",
-      "handicapFilePath": "/story/bring.png"
-    },
-    {
-      "id": 3393,
-      "name": "Dennis Mann",
-      "account": "ashley28",
-      "password (hash)": "443d802b51e50e1b060baa45c4d3a44cbfe5416d4ab051aeb05ae81a38551279",
-      "email": "chloealvarez@gmail.com",
-      "phone": "742.070.7220",
-      "handicapFilePath": "/themselves/fast.mp3"
-    },
-    {
-      "id": 5541,
-      "name": "Darlene Rodriguez",
-      "account": "pmahoney",
-      "password (hash)": "bd939d4976d38c66bd05d1efccba450579207a30eac62ec960ad6ff3e052bef8",
-      "email": "wangcarla@gmail.com",
-      "phone": "161-316-6100",
-      "handicapFilePath": "/several/market.flac"
-    },
-    {
-      "id": 9858,
-      "name": "Chase Martin",
-      "account": "dwarner",
-      "password (hash)": "81db254543d380aabda79f819961323235c4fcd8507696f1e0c0af5e174f3f1f",
-      "email": "flynnmiranda@gmail.com",
-      "phone": "661-230-0475",
-      "handicapFilePath": "/and/say.flac"
-    },
-    {
-      "id": "hnqq4jboa",
-      "name": "john",
-      "account": "johnson683",
-      "password_hashed": "jasidjSA",
-      "email": "erictsai100@gmail.com",
-      "phone": "0975301078",
-      "handicapFilePath": "/home"
-    }
-  ]
+    "users": [
+        {
+            "id": 996,
+            "name": "Kristine Young",
+            "account": "jbrown",
+            "password": "1bb534712fe5a1de8dca3e65080f4daf2033985ee799963d6342e71a1a144589",
+            "email": "hjohnson@gmail.com",
+            "phone": "001-615-731-5615x367",
+            "handicapFilePath": "/story/bring.png"
+        },
+        {
+            "id": 3393,
+            "name": "Dennis Mann",
+            "account": "ashley28",
+            "password": "443d802b51e50e1b060baa45c4d3a44cbfe5416d4ab051aeb05ae81a38551279",
+            "email": "chloealvarez@gmail.com",
+            "phone": "742.070.7220",
+            "handicapFilePath": "/themselves/fast.mp3"
+        },
+        {
+            "id": 5541,
+            "name": "Darlene Rodriguez",
+            "account": "pmahoney",
+            "password": "bd939d4976d38c66bd05d1efccba450579207a30eac62ec960ad6ff3e052bef8",
+            "email": "wangcarla@gmail.com",
+            "phone": "161-316-6100",
+            "handicapFilePath": "/several/market.flac"
+        },
+        {
+            "id": 9858,
+            "name": "Chase Martin",
+            "account": "dwarner",
+            "password": "81db254543d380aabda79f819961323235c4fcd8507696f1e0c0af5e174f3f1f",
+            "email": "flynnmiranda@gmail.com",
+            "phone": "661-230-0475",
+            "handicapFilePath": "/and/say.flac"
+        }
+    ]
 }
