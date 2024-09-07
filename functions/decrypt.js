@@ -1,65 +1,31 @@
-import fs from "fs";
-import crypto from "crypto";
-import path from "path";
+const fs = require('fs');
+const crypto = require('crypto');
+const path = require('path');
 
 function decryptWithPrivateKey(encryptedMessage) {
+    const privateKey = fs.readFileSync(path.join(__dirname, 'private_key.pem'), 'utf8');
 
-  const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
-      modulusLength: 2048,
-      publicKeyEncoding: {
-          type: 'spki',
-          format: 'pem'
-      },
-      privateKeyEncoding: {
-          type: 'pkcs8',
-          format: 'pem',
-          cipher: 'aes-256-cbc',
-          passphrase: 'top secret'
-      }
-  });
-  console.log(privateKey)
+    try {
+        const encryptedBuffer = Buffer.from(encryptedMessage, 'base64');
 
-  // Encrypt and decrypt
-  const data = 'Hello, world!';
-  const encrypted = crypto.publicEncrypt(
-      {
-          key: publicKey,
-          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING
-      },
-      Buffer.from(data)
-  );
+        const decrypted = crypto.privateDecrypt(
+            {
+                key: crypto.createPrivateKey({
+                    key: privateKey,
+                    format: 'pem',
+                    type: 'pkcs1', 
+                }),
 
-  const decrypted = crypto.privateDecrypt(
-      {
-          key: privateKey,
-          padding: crypto.constants.RSA_PKCS1_OAEP_PADDING
-      },
-      encrypted
-  );
+                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING
+            },
+            encryptedBuffer
+        );
 
-  console.log('Decrypted:', decrypted.toString('utf8'));
-
-  // const pemPath = `private_key.pem`;
-
-
-  // const RSA_PRIVATE_KEY = fs.readFileSync(
-  //   path.join(__dirname, pemPath),
-  //   "utf8"
-  // );
-
-  // console.log(RSA_PRIVATE_KEY)
-
-  // if (RSA_PRIVATE_KEY) {
-  //   const buffer = Buffer.from(encryptedMessage, "base64");
-  //   const decrypted = crypto.privateDecrypt(
-  //     {
-  //       key: RSA_PRIVATE_KEY,
-  //       padding: crypto.constants.RSA_PKCS1_OAEP_PADDING
-  //     },
-  //     buffer
-  //   );
-  //   return decrypted.toString("utf8");
-  // }
+        console.log('Decrypted:', decrypted.toString('utf8'));
+    } catch (err) {
+        console.error('Decryption failed:', err.message);
+    }
 }
 
-export {decryptWithPrivateKey};
+const encryptedMessage = "Ms5GCL7OAh4gTtSlf398WVNTBD71EqGEfm/rBQO+v++Zb9sVBz0RspGkEklFjL5HY0e95CTY7LcSqeA88wzve5HR4ktRYpEfHokbVla9rSrYTCn/MurghryqLleK8cMk6qRSZEXInhmXyEPVsKv/LffqR+BJ8QcLBrKIhEFFZ9M=";
+decryptWithPrivateKey(encryptedMessage);
