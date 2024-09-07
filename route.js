@@ -37,10 +37,12 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/regist', (req, res) => {
-	const usersFilePath = path.join(__dirname, '../db/users.json');
-	const { account, password, phone, email } = req.body;
+	const usersFilePath = path.join(__dirname, './db/users.json');
+	const { name, account, password, phone, email, handicapFilePath } = req.body;
 
-	if (!account || !password || !phone || !email) {
+	console.log(req.body)
+
+	if (!name || !account || !password || !phone || !email || !handicapFilePath) {
 		return res.status(400).json({ message: '請提供完整的註冊資訊 (account, password, phone, email)' });
 	}
 
@@ -52,9 +54,8 @@ router.post('/regist', (req, res) => {
 
 		let users = [];
 		if (data) {
-			users = JSON.parse(data);
+			users = JSON.parse(data).users;
 		}
-
 
 		const userExists = users.find(user => user.account === account);
 		if (userExists) {
@@ -62,15 +63,18 @@ router.post('/regist', (req, res) => {
 		}
 
 		const newUser = {
-			account,
-			password,
-			phone,
-			email
+			id: Math.random().toString(36).substr(2, 9),
+			name: name,
+			account: account,
+			password_hashed: password,
+			email: email,
+			phone: phone,
+			handicapFilePath: handicapFilePath
 		};
 
 		users.push(newUser);
 
-		fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), 'utf8', (err) => {
+		fs.writeFile(usersFilePath, JSON.stringify({ users }, null, 2), 'utf8', (err) => {
 			if (err) {
 				console.error(err);
 				return res.status(500).json({ message: '無法儲存用戶資料' });
