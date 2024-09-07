@@ -47,14 +47,14 @@ router.post('/login', urlencodedParser, (req, res) => {
 });
 
 router.post('/regist', urlencodedParser, (req, res) => {
-	const usersFilePath = path.join(__dirname, '../db/users.json');
+	const jsonFilePath = path.join(__dirname, '../db/users.json');
 	const { name, account, password, phone, email, handicapFilePath } = req.body;
 
 	if (!name || !account || !password || !phone || !email || !handicapFilePath) {
 		return res.status(400).json({ message: 'please provide the complete information (account, password, phone, email)', status: false });
 	}
 
-	fs.readFile(usersFilePath, 'utf8', (err, data) => {
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
 			return res.status(500).json({ message: 'failed to read users file', status: false });
@@ -84,7 +84,7 @@ router.post('/regist', urlencodedParser, (req, res) => {
 
 		users.push(newUser);
 
-		fs.writeFile(usersFilePath, JSON.stringify({ users }, null, 4), 'utf8', (err) => {
+		fs.writeFile(jsonFilePath, JSON.stringify({ users }, null, 4), 'utf8', (err) => {
 			if (err) {
 				console.error(err);
 				return res.status(500).json({ message: 'failed to store users file', status: false });
@@ -95,10 +95,10 @@ router.post('/regist', urlencodedParser, (req, res) => {
 });
 
 router.post('/forget-password', urlencodedParser, (req, res) => {
-	const usersFilePath = path.join(__dirname, '../db/users.json');
+	const jsonFilePath = path.join(__dirname, '../db/users.json');
 	const { account, email } = req.body;
 
-	fs.readFile(usersFilePath, 'utf8', (err, data) => {
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
 		if (err) {
 			return res.status(500).json({ message: 'Error reading users file', status: false });
 		}
@@ -118,7 +118,7 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 
 		forgetPasswordUser.password = newPassword;
 
-		fs.writeFile(usersFilePath, JSON.stringify({ users }, null, 4), 'utf8', (writeErr) => {
+		fs.writeFile(jsonFilePath, JSON.stringify({ users }, null, 4), 'utf8', (writeErr) => {
 			if (writeErr) {
 				return res.status(500).json({ message: 'Error writing to users file', status: false });
 			}

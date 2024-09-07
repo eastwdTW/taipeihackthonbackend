@@ -47,14 +47,14 @@ router.post('/login', urlencodedParser, (req, res) => {
 });
 
 router.post('/regist', urlencodedParser, (req, res) => {
-	const usersFilePath = path.join(__dirname, '../db/drivers.json');
-	const { name, account, password, phone, email, handicapFilePath } = req.body;
+	const jsonFilePath = path.join(__dirname, '../db/drivers.json');
+	const { name, account, password, phone, email, driverIdentificationCode } = req.body;
 
-	if (!name || !account || !password || !phone || !email || !handicapFilePath) {
+	if (!name || !account || !password || !phone || !email || !driverIdentificationCode) {
 		return res.status(400).json({ message: 'please provide the complete information (account, password, phone, email)', status: false });
 	}
 
-	fs.readFile(usersFilePath, 'utf8', (err, data) => {
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
 			return res.status(500).json({ message: 'failed to read drivers file', status: false });
@@ -79,12 +79,12 @@ router.post('/regist', urlencodedParser, (req, res) => {
 			password: crypto.createHash('sha256').update(decrypt_password).digest('hex'),
 			email: email,
 			phone: phone,
-			handicapFilePath: handicapFilePath
+			driverIdentificationCode: driverIdentificationCode
 		};
 
 		drivers.push(newUser);
 
-		fs.writeFile(usersFilePath, JSON.stringify({ drivers }, null, 4), 'utf8', (err) => {
+		fs.writeFile(jsonFilePath, JSON.stringify({ drivers }, null, 4), 'utf8', (err) => {
 			if (err) {
 				console.error(err);
 				return res.status(500).json({ message: 'failed to store drivers file', status: false });
@@ -95,10 +95,10 @@ router.post('/regist', urlencodedParser, (req, res) => {
 });
 
 router.post('/forget-password', urlencodedParser, (req, res) => {
-	const usersFilePath = path.join(__dirname, '../db/drivers.json');
+	const jsonFilePath = path.join(__dirname, '../db/drivers.json');
 	const { account, email } = req.body;
 
-	fs.readFile(usersFilePath, 'utf8', (err, data) => {
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
 		if (err) {
 			return res.status(500).json({ message: 'Error reading drivers file', status: false });
 		}
@@ -110,7 +110,7 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 
 		const forgetPasswordDriver = drivers.find(driver => (driver.account === account) && (driver.email === email));
 
-		if (!forgetPasswordUser) {
+		if (!forgetPasswordDriver) {
 			return res.status(404).json({ message: 'User not found or unmatched', status: false });
 		}
 
@@ -118,7 +118,7 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 
 		forgetPasswordDriver.password = newPassword;
 
-		fs.writeFile(usersFilePath, JSON.stringify({ drivers }, null, 4), 'utf8', (writeErr) => {
+		fs.writeFile(jsonFilePath, JSON.stringify({ drivers }, null, 4), 'utf8', (writeErr) => {
 			if (writeErr) {
 				return res.status(500).json({ message: 'Error writing to drivers file', status: false });
 			}
