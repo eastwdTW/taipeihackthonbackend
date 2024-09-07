@@ -73,7 +73,7 @@ router.post('/regist', urlencodedParser, (req, res) => {
 		var decrypt_password = decryptWithPrivateKey(password)
 
 		const newUser = {
-			id: Math.random().toString(36).substr(2, 9),
+			id: crypto.createHash('sha256').update(account).digest('hex'),
 			name: name,
 			account: account,
 			password: crypto.createHash('sha256').update(decrypt_password).digest('hex'),

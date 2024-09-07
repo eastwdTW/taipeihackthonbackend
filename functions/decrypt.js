@@ -2,24 +2,30 @@ import * as fs from "fs";
 import * as crypto from "crypto";
 import * as path from "path";
 
-
 function decryptWithPrivateKey(encryptedMessage) {
-  // const pemPath = `private_key.pem`;
+    const privateKey = fs.readFileSync(path.join(__dirname, 'private_key.pem'), 'utf8');
 
+    try {
+        const encryptedBuffer = Buffer.from(encryptedMessage, 'base64');
 
-  // const RSA_PRIVATE_KEY = fs.readFileSync(
-  //   path.join(__dirname, pemPath),
-  //   "utf8"
-  // );
+        const decrypted = crypto.privateDecrypt(
+            {
+                key: crypto.createPrivateKey({
+                    key: privateKey,
+                    format: 'pem',
+                    type: 'pkcs1', 
+                }),
 
-  // console.log(RSA_PRIVATE_KEY)
+                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING
+            },
+            encryptedBuffer
+        );
 
-  // if (RSA_PRIVATE_KEY) {
-  //   const buffer = Buffer.from(encryptedMessage, "base64");
-  //   const decrypted = crypto.privateDecrypt(RSA_PRIVATE_KEY, buffer);
-  //   return decrypted.toString("utf8");
-  // }
-  return encryptedMessage;
+        console.log('Decrypted:', decrypted.toString('utf8'));
+    } catch (err) {
+        console.error('Decryption failed:', err.message);
+    }
+    return encryptedMessage;
 }
 
 export {decryptWithPrivateKey}
