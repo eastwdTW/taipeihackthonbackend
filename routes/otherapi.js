@@ -130,7 +130,7 @@ router.get('/available/car', (req, res) => {
 			if (!availableDriver) {
 				return res.json({ status: false, message: 'No available driver' });
 			}
-			res.json({ status: true, carType: availableDriver.carType, waitingTime: "01:00:00", driverId: availableDriver.id, price: 320 });
+			res.json({ status: true, carType: availableDriver.carType, waitingTime: "00:30:00", driverId: availableDriver.id, price: 320 });
 		});
 
 	});
