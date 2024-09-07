@@ -7,22 +7,6 @@ const router = express.Router()
 var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-router.get('/test', (req, res) => {
-	const jsonFilePath = path.join(__dirname, './db/users.json');
-
-	var mes;
-
-	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
-		console.log(data)
-		mes = JSON.parse(data)
-	});
-
-	// console.log(typeof Data)
-	// console.log(mes)
-
-	return res.json({msg:"succeed"})
-});
-
 router.post('/login', urlencodedParser, (req, res) => {
 	const jsonFilePath = path.join(__dirname, './db/users.json');
 
@@ -39,10 +23,8 @@ router.post('/login', urlencodedParser, (req, res) => {
             return res.status(500).json({ message: 'Error parsing user data' });
         }
 
-        // console.log(users)
-        console.log(req.body)
-
         // Extract credentials from the request body
+        console.log(req.body)
         const { account, password } = req.body;
 
         // Find the user with the provided account
