@@ -1,29 +1,25 @@
 import express from 'express'
-// import "../db/orders.json"
+import fs from 'fs';
+import path from 'path';
+import "../db/orders.json"
 
 const router = express.Router()
 
-// router.post('/start', (_, res) => {
-// 	genNumber()
-// 	res.json({msg: true})
-// })
-// router.get('/guess', (req, res) => {
-// 	const number = getNumber()
-// 	const guessed = roughScale(req.query.number, 10)
+router.get('/orders', (req, res) => {
+	const jsonFilePath = path.join(__dirname, '../db/orders.json');
 
-// 	if(!guessed || guessed < 1 || guessed > 100) {
-// 		res.status(406).send({msg: 'Not a legal number.'})
-// 	}else if(number === guessed){
-// 		res.json({msg: 'Equal'})
-// 	}else if(number > guessed){
-// 		res.json({msg: 'Bigger'})
-// 	}else{
-// 		res.json({msg: 'Smaller'})
-// 	}
-// })
-// router.post('/restart', (_, res) => {
-// 	genNumber()
-// 	res.json({msg: false})
-// })
+	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error reading file', error: err });
+		}
+
+		try {
+			const orders = JSON.parse(data);
+			res.json(orders);
+		} catch (parseError) {
+			res.status(500).json({ message: 'Error parsing JSON', error: parseError });
+		}
+	});
+});
 
 export default router
