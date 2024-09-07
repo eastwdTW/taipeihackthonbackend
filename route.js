@@ -1,8 +1,11 @@
-import express from 'express'
+import express from 'express';
+import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
 
 const router = express.Router()
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 router.get('/test', (req, res) => {
 	const jsonFilePath = path.join(__dirname, './db/users.json');
@@ -14,14 +17,14 @@ router.get('/test', (req, res) => {
 		mes = JSON.parse(data)
 	});
 
-	console.log(typeof Data)
-	console.log(mes)
+	// console.log(typeof Data)
+	// console.log(mes)
 
 	return res.json({msg:"succeed"})
 });
 
-router.post('/login', (req, res) => {
-	const jsonFilePath = path.join(__dirname, '../db/users.json');
+router.post('/login', urlencodedParser, (req, res) => {
+	const jsonFilePath = path.join(__dirname, './db/users.json');
 
 	// Read the users.json file
     fs.readFile(jsonFilePath, 'utf8', (err, data) => {
@@ -31,24 +34,28 @@ router.post('/login', (req, res) => {
 
         let users;
         try {
-            users = JSON.parse(data);
+            users = JSON.parse(data).users;
         } catch (parseError) {
             return res.status(500).json({ message: 'Error parsing user data' });
         }
+
+        // console.log(users)
+        console.log(req.body)
 
         // Extract credentials from the request body
         const { account, password } = req.body;
 
         // Find the user with the provided account
         const user = users.find(user => user.account === account);
+        console.log(user)
 
         if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'User not found' });
         }
 
         // Check if the password matches
         if (user.password !== password) {
-            return res.status(401).json({ message: 'Invalid credentials' });
+            return res.status(401).json({ message: 'Incorrect password' });
         }
 
         // If authentication is successful
