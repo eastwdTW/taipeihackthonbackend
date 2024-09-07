@@ -48,10 +48,10 @@ router.post('/login', urlencodedParser, (req, res) => {
 
 router.post('/regist', urlencodedParser, (req, res) => {
 	const jsonFilePath = path.join(__dirname, '../db/drivers.json');
-	const { name, account, password, phone, email, driverIdentificationCode } = req.body;
+	const { name, account, password, phone, email, driverIdentificationCode, plate, carType } = req.body;
 
-	if (!name || !account || !password || !phone || !email || !driverIdentificationCode) {
-		return res.status(400).json({ message: 'please provide the complete information (account, password, phone, email)', status: false });
+	if (!name || !account || !password || !phone || !email || !driverIdentificationCode || !plate || !carType) {
+		return res.status(400).json({ message: 'please provide the complete information (account, password, phone, email, driverIdentificationCode, plate, carType)', status: false });
 	}
 
 	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
@@ -79,7 +79,9 @@ router.post('/regist', urlencodedParser, (req, res) => {
 			password: crypto.createHash('sha256').update(decrypt_password).digest('hex'),
 			email: email,
 			phone: phone,
-			driverIdentificationCode: driverIdentificationCode
+			driverIdentificationCode: driverIdentificationCode,
+			plate: plate,
+			carType: carType
 		};
 
 		drivers.push(newUser);
