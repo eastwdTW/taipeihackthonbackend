@@ -27,4 +27,10 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 
 });
 
+router.get('available/car', (req, res) => {
+	const {from, to, startDate, carType} = req.query;
+
+	
+});
+
 export default router

@@ -137,7 +137,13 @@ router.post('/forget-password', urlencodedParser, (req, res) => {
 				to: 'jason1799678@gmail.com', // 收件人地址
 				subject: '重設密碼確認信', // 主題
 				text: '您的密碼已重設為' + newPassword, // 郵件內容 (純文字)
-				attachment: '../db/',
+				attachment: [
+					{
+						filename: 'god_fist.jpg',
+						path: '../images/god_fist.jpg',
+						// cid: 'karta1027710@gmail.com',
+					}
+				],
 			};
 
 			transporter.sendMail(mailOptions, (error, info) => {
