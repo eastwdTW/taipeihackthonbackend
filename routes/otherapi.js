@@ -93,7 +93,6 @@ router.post("/reserve", urlencodedParser, (req, res) => {
         const newOrder = {
           id: Math.random().toString(36).substr(2, 9),
           startDate: startDate,
-          endDate: formatDate(newStart.setHours(newStart.getHours() + 2)),
           from: from,
           to: to,
           carType: carType,

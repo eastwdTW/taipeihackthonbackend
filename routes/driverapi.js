@@ -5,6 +5,7 @@ import path from "path";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { decryptWithPrivateKey } from "../functions/decrypt";
+import { formatDate } from "../functions/dateformat";
 
 const router = express.Router();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -145,6 +146,54 @@ router.post("/regist", urlencodedParser, (req, res) => {
   });
 });
 
+router.post("/arrive-destination", urlencodedParser, (req, res) => {
+  const jsonFilePath = path.join(__dirname, "../db/orders.json");
+  const { orderId, driverId } = req.body;
+
+  fs.readFile(jsonFilePath, "utf8", (err, data) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ message: "Error reading orders file", status: false });
+    }
+
+    let orders = [];
+    if (data) {
+      orders = JSON.parse(data).orders;
+    }
+
+    const findOrder = orders.findIndex(
+      (order) => order.driverId === driverId && order.id === orderId
+    );
+
+    if (!orders[findOrder]) {
+      return res
+        .status(404)
+        .json({ message: "Order not found or unmatched", status: false });
+    }
+
+    orders[findOrder].endDate = formatDate(new Date());
+
+    fs.writeFile(
+      jsonFilePath,
+      JSON.stringify({ orders }, null, 2),
+      "utf8",
+      (err) => {
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .json({ message: "failed to store file", status: false });
+        }
+        return res.status(200).json({
+          message: "driver arriverd success",
+          status: true,
+        });
+      }
+    );
+  });
+});
+
 router.post("/forget-password", urlencodedParser, (req, res) => {
   const jsonFilePath = path.join(__dirname, "../db/drivers.json");
   const { account, email } = req.body;
@@ -235,7 +284,7 @@ router.get("/history", async (req, res) => {
 
     try {
       const orders = JSON.parse(data).orders.filter(
-        (order) => order.driverId == driverId
+        (order) => order.driverId == driverId && order.endDate
       );
       const newOrders = [];
 
@@ -279,9 +328,7 @@ router.get("/ticket", async (req, res) => {
       const newOrders = [];
 
       orders.filter((order) => {
-        var now = new Date();
-        var endDate = new Date(order.endDate);
-        if (now < endDate) {
+        if (!order.endDate) {
           filtedOrders.push(order);
         }
       });
