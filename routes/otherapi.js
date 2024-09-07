@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
+import { console } from 'inspector';
 
 const router = express.Router()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -77,9 +78,11 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 
 router.get('/available/car', (req, res) => {
 	const ordersFilePath = path.join(__dirname, '../db/orders.json');
+	const driversFilePath = path.join(__dirname, '../db/drivers.json');
 	const { from, to, startDate, carType } = req.query;
 
-	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+
+	fs.readFile(ordersFilePath, 'utf8', (err, data) => {
 		if (err) {
 			return res.status(500).json({ message: 'Error reading orders file', status: false });
 		}
@@ -88,17 +91,29 @@ router.get('/available/car', (req, res) => {
 		if (data) {
 			orders = JSON.parse(data).orders;
 		}
-		const fromDate = new Date(from);
-		const toDate = new Date(to);
 
 		const conflictOrders = orders.filter(order => {
-			const orderFromDate = new Date(order.from);
-			const orderToDate = new Date(order.to);
-			return (fromDate >= orderFromDate) && (fromDate <= orderToDate) || (toDate >= orderFromDate) && (toDate <= orderToDate);
+			(startDate >= order.startDate) && (startDate <= order.endDate);
 		});
 
+		const conflictdriverIds = conflictOrders.map(order => order.driverId);
+		console.log(conflictdriverIds);
+		fs.readFile(driversFilePath, 'utf8', (err, driverData) => {
+			if (err) {
+				return res.status(500).json({ message: 'Error reading drivers file', status: false });
+			}
 
+			let drivers = [];
+			if (driverData) {
+				drivers = JSON.parse(driverData).drivers;
+			}
 
+			const availableDriver = drivers.find(driver => !conflictdriverIds.includes(driver.driverId) && driver.carType === carType);
+			if (!availableDriver) {
+				return res.json({ status: false, message: 'No available driver' });
+			}
+			res.json({ status: true, carType: availableDriver.carType, waitingTime: "01:00:00", price: 300 });
+		});
 
 	});
 
