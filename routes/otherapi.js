@@ -94,15 +94,38 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 					return res.status(200).json({ message: 'reservation success', status: true, order: newOrder });
 				});
 			}
+			validDriver = validDrivers[0].id;
+		});
+
+		const newOrder = {
+			id: Math.random().toString(36).substr(2, 9),
+			startDate: startDate,
+			endDate: null,
+			from: from,
+			to: to,
+			carType: carType,
+			driverId: validDriver,
+			customerid: customerid
+		};
+
+		orders.push(newOrder);
+
+		fs.writeFile(jsonFilePath, JSON.stringify({ orders }, null, 4), 'utf8', (err) => {
+			if (err) {
+				console.error(err);
+				return res.status(500).json({ message: 'failed to store file', status: false });
+			}
+			return res.status(200).json({ message: 'registration success', status: true, order: newOrder });
 		});
 	});
 });
 
 router.get('/available/car', (req, res) => {
 	const ordersFilePath = path.join(__dirname, '../db/orders.json');
+	const driversFilePath = path.join(__dirname, '../db/drivers.json');
 	const { from, to, startDate, carType } = req.query;
 
-	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
+	fs.readFile(ordersFilePath, 'utf8', (err, data) => {
 		if (err) {
 			return res.status(500).json({ message: 'Error reading orders file', status: false });
 		}
@@ -111,17 +134,28 @@ router.get('/available/car', (req, res) => {
 		if (data) {
 			orders = JSON.parse(data).orders;
 		}
-		const fromDate = new Date(from);
-		const toDate = new Date(to);
 
-		const conflictOrders = orders.filter(order => {
-			const orderFromDate = new Date(order.from);
-			const orderToDate = new Date(order.to);
-			return (fromDate >= orderFromDate) && (fromDate <= orderToDate) || (toDate >= orderFromDate) && (toDate <= orderToDate);
+		const conflictOrders = orders.filter((order) => (
+			(startDate >= order.startDate) && (startDate <= order.endDate)
+		));
+
+		const conflictdriverIds = conflictOrders.map(order => order.driverId);
+		fs.readFile(driversFilePath, 'utf8', (driversErr, driverData) => {
+			if (driversErr) {
+				return res.status(500).json({ message: 'Error reading drivers file', status: false });
+			}
+
+			let drivers = [];
+			if (driverData) {
+				drivers = JSON.parse(driverData).drivers;
+			}
+
+			const availableDriver = drivers.find((driver) => ((!conflictdriverIds.includes(driver.id)) && (driver.carType === carType)));
+			if (!availableDriver) {
+				return res.json({ status: false, message: 'No available driver' });
+			}
+			res.json({ status: true, carType: availableDriver.carType, waitingTime: "00:30:00", driverId: availableDriver.id, price: 320 });
 		});
-
-
-
 
 	});
 
