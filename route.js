@@ -43,7 +43,7 @@ router.post('/login', urlencodedParser, (req, res) => {
 		}
 
 		// If authentication is successful
-		res.status(200).json({ message: 'Login successful' , token: user.id});
+		res.status(200).json({ message: 'Login successful', token: user.id });
 	});
 });
 
@@ -85,7 +85,7 @@ router.post('/regist', urlencodedParser, (req, res) => {
 
 		users.push(newUser);
 
-		fs.writeFile(usersFilePath, JSON.stringify({ users }, null, 2), 'utf8', (err) => {
+		fs.writeFile(usersFilePath, JSON.stringify({ users }, null, 4), 'utf8', (err) => {
 			if (err) {
 				console.error(err);
 				return res.status(500).json({ message: 'failed to store users file', status: false });
@@ -95,8 +95,62 @@ router.post('/regist', urlencodedParser, (req, res) => {
 	});
 });
 
-router.post('/forget-password', (req, res) => {
+router.post('/forget-password', urlencodedParser, (req, res) => {
+	const usersFilePath = path.join(__dirname, './db/users.json');
+	const { account, email } = req.body;
 
+	fs.readFile(usersFilePath, 'utf8', (err, data) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error reading users file', status: false });
+		}
+
+		let users = [];
+		if (data) {
+			users = JSON.parse(data).users;
+		}
+
+		const forgetPasswordUser = users.find(user => (user.account === account) && (user.email === email));
+
+		if (!forgetPasswordUser) {
+			return res.status(404).json({ message: 'User not found or unmatched', status: false });
+		}
+
+		const newPassword = crypto.randomBytes(4).toString('hex');
+
+		forgetPasswordUser.password = newPassword;
+
+		fs.writeFile(usersFilePath, JSON.stringify({ users }, null, 4), 'utf8', (writeErr) => {
+			if (writeErr) {
+				return res.status(500).json({ message: 'Error writing to users file', status: false });
+			}
+
+			const nodemailer = require('nodemailer');
+			const transporter = nodemailer.createTransport({
+				service: 'Gmail',
+				secure: true,
+				auth: {
+					user: "karta1027710@gmail.com",
+					pass: "csznqanfslnwfzwt",
+				},
+			});
+
+			let mailOptions = {
+				from: 'karta1027710@gmail.com', // 寄件人地址
+				to: 'vincent71334@gmail.com', // 收件人地址
+				subject: '重設密碼確認信', // 主題
+				text: '您的密碼已重設為' + newPassword, // 郵件內容 (純文字)
+			};
+
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					return console.log(error);
+				}
+				console.log('Email sent: ' + info.response);
+			});
+
+			res.status(200).json({ message: 'Password reset successful', newPassword, status: true });
+		});
+	});
 });
 
 router.get('/announcement', (req, res) => {
