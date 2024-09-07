@@ -50,13 +50,13 @@ router.post('/regist', urlencodedParser, (req, res) => {
 	console.log(req.body)
 
 	if (!name || !account || !password || !phone || !email || !handicapFilePath) {
-		return res.status(400).json({ message: '請提供完整的註冊資訊 (account, password, phone, email)' });
+		return res.status(400).json({ message: 'please provide the complete information (account, password, phone, email)', status: false });
 	}
 
 	fs.readFile(usersFilePath, 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
-			return res.status(500).json({ message: '讀取用戶資料失敗' });
+			return res.status(500).json({ message: 'failed to read users file', status: false });
 		}
 
 		let users = [];
@@ -66,14 +66,14 @@ router.post('/regist', urlencodedParser, (req, res) => {
 
 		const userExists = users.find(user => user.account === account);
 		if (userExists) {
-			return res.status(409).json({ message: '該帳號已經存在' });
+			return res.status(409).json({ message: 'The account already exists', status: false });
 		}
 
 		const newUser = {
 			id: Math.random().toString(36).substr(2, 9),
 			name: name,
 			account: account,
-			password_hashed: password,
+			password: password,
 			email: email,
 			phone: phone,
 			handicapFilePath: handicapFilePath
@@ -84,9 +84,9 @@ router.post('/regist', urlencodedParser, (req, res) => {
 		fs.writeFile(usersFilePath, JSON.stringify({ users }, null, 2), 'utf8', (err) => {
 			if (err) {
 				console.error(err);
-				return res.status(500).json({ message: '無法儲存用戶資料' });
+				return res.status(500).json({ message: 'failed to store users file', status: false });
 			}
-			return res.status(201).json({ message: '註冊成功', user: newUser });
+			return res.status(201).json({ message: 'registration success', status: true, user: newUser });
 		});
 	});
 });
