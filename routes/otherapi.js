@@ -94,28 +94,6 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 					return res.status(200).json({ message: 'reservation success', status: true, order: newOrder });
 				});
 			}
-			validDriver = validDrivers[0].id;
-		});
-
-		const newOrder = {
-			id: Math.random().toString(36).substr(2, 9),
-			startDate: startDate,
-			endDate: null,
-			from: from,
-			to: to,
-			carType: carType,
-			driverId: validDriver,
-			customerid: customerid
-		};
-
-		orders.push(newOrder);
-
-		fs.writeFile(jsonFilePath, JSON.stringify({ orders }, null, 4), 'utf8', (err) => {
-			if (err) {
-				console.error(err);
-				return res.status(500).json({ message: 'failed to store file', status: false });
-			}
-			return res.status(200).json({ message: 'registration success', status: true, order: newOrder });
 		});
 	});
 });
