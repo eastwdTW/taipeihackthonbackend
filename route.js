@@ -1,12 +1,12 @@
 import express from 'express'
 import fs from 'fs';
 import path from 'path';
-import "../db/users.json"
+import "./db/drivers.json"
 
 const router = express.Router()
 
-router.get('/users', (req, res) => {
-	const jsonFilePath = path.join(__dirname, '../db/users.json');
+router.get('/drivers', (req, res) => {
+	const jsonFilePath = path.join(__dirname, '../db/drivers.json');
 
 	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
 		if (err) {
@@ -14,8 +14,8 @@ router.get('/users', (req, res) => {
 		}
 
 		try {
-			const users = JSON.parse(data);
-			res.json(users);
+			const drivers = JSON.parse(data);
+			res.json(drivers);
 		} catch (parseError) {
 			res.status(500).json({ message: 'Error parsing JSON', error: parseError });
 		}
