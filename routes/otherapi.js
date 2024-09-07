@@ -184,7 +184,7 @@ router.get("/available/car", (req, res) => {
   });
 });
 
-router.post("/faq", urlencoded, (req, res) => {
+router.post("/faq", urlencodedParser, (req, res) => {
   const jsonFilePath = path.join(__dirname, "../db/faq.json");
   const { question } = req.body;
 
@@ -197,7 +197,7 @@ router.post("/faq", urlencoded, (req, res) => {
 
     try {
       const faqs = JSON.parse(data);
-      res.json({ answer: faqs.find((faq) => faq.question === question)});
+      res.json({ answer: faqs.find((faq) => faq.question === question).answer});
     } catch (parseError) {
       return res
         .status(500)
