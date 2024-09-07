@@ -56,8 +56,21 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 				drivers = JSON.parse(data).drivers;
 			}
 
-			const validDrivers = drivers.filter((driver) => driver.carType === carType);
+			var validDrivers = drivers.filter((driver) => driver.carType === carType);
 
+			var orderMayConflict = orders.filter((order) => order.carType === carType);
+			orderMayConflict.forEach((order) => {
+				if (startDate > order.startDate && startDate < order.endDate) {
+					var invalidDriverIdx = drivers.findIndex(driver => driver.id === order.driverId)
+					delete validDrivers[invalidDriverIdx]
+				}
+			});
+
+			if (!validDrivers.length) {
+				return res.status(200).json({ message: 'no driver available', status: false });
+			}
+
+			validDriver = validDrivers[0].id;
 		});
 
 		const newOrder = {
@@ -78,7 +91,7 @@ router.post('/reserve', urlencodedParser, (req, res) => {
 				console.error(err);
 				return res.status(500).json({ message: 'failed to store file', status: false });
 			}
-			return res.status(201).json({ message: 'registration success', status: true, order: newOrder });
+			return res.status(200).json({ message: 'registration success', status: true, order: newOrder });
 		});
 	});
 });
