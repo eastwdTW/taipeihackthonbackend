@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 
 const router = express.Router()
 var jsonParser = bodyParser.json()
@@ -24,13 +25,9 @@ router.post('/login', urlencodedParser, (req, res) => {
 			return res.status(500).json({ message: 'Error parsing user data' });
 		}
 
-		// Extract credentials from the request body
-		console.log(req.body)
 		const { account, password } = req.body;
 
-		// Find the user with the provided account
 		const user = users.find(user => user.account === account);
-		console.log(user)
 
 		if (!user) {
 			return res.status(401).json({ message: 'User not found' });
@@ -42,7 +39,7 @@ router.post('/login', urlencodedParser, (req, res) => {
 		}
 
 		// If authentication is successful
-		res.status(200).json({ message: 'Login successful' });
+		res.status(200).json({ message: 'Login successful' , token: user.id});
 	});
 });
 
@@ -98,8 +95,8 @@ router.post('/forget-password', (req, res) => {
 
 });
 
-router.get('/drivers', (req, res) => {
-	const jsonFilePath = path.join(__dirname, '../db/drivers.json');
+router.get('/announcement', (req, res) => {
+	const jsonFilePath = path.join(__dirname, './db/announcements.json');
 
 	fs.readFile(jsonFilePath, 'utf8', (err, data) => {
 		if (err) {
@@ -107,8 +104,8 @@ router.get('/drivers', (req, res) => {
 		}
 
 		try {
-			const drivers = JSON.parse(data);
-			res.json(drivers);
+			const announcements = JSON.parse(data);
+			res.json(announcements);
 		} catch (parseError) {
 			res.status(500).json({ message: 'Error parsing JSON', error: parseError });
 		}
